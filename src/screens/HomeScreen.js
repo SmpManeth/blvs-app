@@ -1,9 +1,17 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
+import React from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 export default function HomeScreen() {
-  const userName = 'John'; // In real case, get from auth state
-    
+  const userName = "John"; // In real case, get from auth state
+  const navigation = useNavigation();
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -20,23 +28,38 @@ export default function HomeScreen() {
       <Text style={styles.sectionTitle}>Related Documents</Text>
 
       <View style={styles.grid}>
-        <TouchableOpacity style={styles.gridItem}>
-          <Image source={require('../assets/visa-icon.png')} style={styles.gridIcon} />
+        <TouchableOpacity
+          style={styles.gridItem}
+          onPress={() => navigation.navigate("DocumentList")}
+        >
+          <Image
+            source={require("../assets/visa-icon.png")}
+            style={styles.gridIcon}
+          />
           <Text style={styles.gridText}>Visa</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.gridItem}>
-          <Image source={require('../assets/visa-icon.png')} style={styles.gridIcon} />
+          <Image
+            source={require("../assets/visa-icon.png")}
+            style={styles.gridIcon}
+          />
           <Text style={styles.gridText}>Tickets</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.gridItem}>
-          <Image source={require('../assets/visa-icon.png')} style={styles.gridIcon} />
+          <Image
+            source={require("../assets/visa-icon.png")}
+            style={styles.gridIcon}
+          />
           <Text style={styles.gridText}>Hotels</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.gridItem}>
-          <Image source={require('../assets/visa-icon.png')} style={styles.gridIcon} />
+          <Image
+            source={require("../assets/visa-icon.png")}
+            style={styles.gridIcon}
+          />
           <Text style={styles.gridText}>Insurance</Text>
         </TouchableOpacity>
       </View>
@@ -47,55 +70,55 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   greeting: {
     fontSize: 22,
-    fontWeight: '600',
+    fontWeight: "600",
     marginBottom: 20,
   },
   card: {
-    backgroundColor: '#f0f4ff',
+    backgroundColor: "#f0f4ff",
     padding: 20,
     borderRadius: 14,
     marginBottom: 30,
   },
   cardTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   tripInfo: {
-    color: '#555',
+    color: "#555",
     marginTop: 5,
     marginBottom: 15,
   },
   viewButton: {
-    backgroundColor: '#0047AB',
+    backgroundColor: "#0047AB",
     padding: 10,
     borderRadius: 8,
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
   },
   viewButtonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 14,
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: "600",
     marginBottom: 10,
   },
   grid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
   },
   gridItem: {
-    width: '47%',
-    backgroundColor: '#f9f9f9',
+    width: "47%",
+    backgroundColor: "#f9f9f9",
     borderRadius: 12,
     padding: 16,
     marginBottom: 15,
-    alignItems: 'center',
+    alignItems: "center",
   },
   gridIcon: {
     width: 40,
@@ -104,6 +127,6 @@ const styles = StyleSheet.create({
   },
   gridText: {
     fontSize: 14,
-    fontWeight: '500',
+    fontWeight: "500",
   },
 });

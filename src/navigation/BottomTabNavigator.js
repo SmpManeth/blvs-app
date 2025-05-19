@@ -1,8 +1,8 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../screens/HomeScreen";
-// import SavedScreen from "../screens/SavedScreen";
-// import NotificationsScreen from "../screens/NotificationsScreen";
+import SavedScreen from "../screens/SavedScreen";
+import NotificationsScreen from "../screens/NotificationsScreen";
 import { Ionicons } from "@expo/vector-icons";
 
 const Tab = createBottomTabNavigator();
@@ -25,8 +25,8 @@ export default function BottomTabNavigator() {
       })}
     >
       <Tab.Screen name="Explore" component={HomeScreen} />
-      {/* <Tab.Screen name="Saved" component={SavedScreen} /> */}
-      {/* <Tab.Screen name="Updates" component={NotificationsScreen} /> */}
+      <Tab.Screen name="Saved" component={SavedScreen} />
+      <Tab.Screen name="Updates" component={NotificationsScreen} />
     </Tab.Navigator>
   );
 }
