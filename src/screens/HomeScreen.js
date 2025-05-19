@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'rea
 
 export default function HomeScreen() {
   const userName = 'John'; // In real case, get from auth state
+    
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -16,7 +17,7 @@ export default function HomeScreen() {
         </TouchableOpacity>
       </View>
 
-      <Text style={styles.sectionTitle}>Quick Access</Text>
+      <Text style={styles.sectionTitle}>Related Documents</Text>
 
       <View style={styles.grid}>
         <TouchableOpacity style={styles.gridItem}>
