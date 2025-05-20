@@ -7,18 +7,24 @@ import {
   TouchableOpacity,
   Image,
   ImageBackground,
+  Alert
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { login } from '../auth/auth';
 
-export default function LoginScreen() {
-  const navigation = useNavigation();
+export default function LoginScreen({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
-    // TODO: connect to Laravel backend (JWT login)
-    // For now, just navigate to Welcome screen
-    navigation.navigate('Welcome');
+  const handleLogin = async () => {
+    try {
+      const user = await login(email, password);
+      Alert.alert('Success', `Welcome, ${user.name}`);
+      navigation.replace('Welcome'); // Or your main app screen
+    } catch (error) {
+      console.log(error);
+      Alert.alert('Login Failed', 'Invalid email or password');
+    }
   };
 
   return (
