@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react';
-import * as SecureStore from 'expo-secure-store';
-import api from '../api/api';
+import { getToken, logout } from '../api/auth';
+import { fetchCustomerProfile } from '../api/customers';
 
 export const AuthContext = createContext();
 
@@ -9,15 +9,14 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   const checkAuth = async () => {
-    const token = await SecureStore.getItemAsync('auth_token');
+    const token = await getToken();
     if (token) {
       try {
-        const response = await api.get('/customer', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setUser(response.data.user);
+        const userData = await fetchCustomerProfile();
+        setUser(userData);
       } catch (err) {
-        await SecureStore.deleteItemAsync('auth_token'); // invalid token
+        console.warn("Invalid token, logging out...");
+        await logout(); // ensures token removed
         setUser(null);
       }
     }

@@ -8,16 +8,15 @@ import {
   SafeAreaView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import * as SecureStore from "expo-secure-store";
 import { AuthContext } from "../auth/AuthContext";
+import { logout } from "../api/auth";
 
 export default function ProfileScreen() {
   const navigation = useNavigation();
   const { user, setUser } = useContext(AuthContext);
 
   const handleLogout = async () => {
-    await SecureStore.deleteItemAsync("auth_token");
-    setUser(null);
+    await logout();
     navigation.replace("Login");
   };
 
@@ -31,10 +30,10 @@ export default function ProfileScreen() {
           style={styles.profileIcon}
         />
         <Text style={styles.profileName}>
-          {user?.name || "Unknown User"}
+          {user.user?.name || "Unknown User"}
         </Text>
         <Text style={styles.profileEmail}>
-          {user?.email || "No email available"}
+          {user.user?.email || "No email available"}
         </Text>
       </View>
 

@@ -10,7 +10,7 @@ import {
   Alert,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { login } from "../auth/auth";
+import { login } from "../api/auth";
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");

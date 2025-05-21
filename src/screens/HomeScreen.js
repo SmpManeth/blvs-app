@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -12,29 +12,18 @@ import { useNavigation } from "@react-navigation/native";
 import api from "../api/api";
 import * as SecureStore from "expo-secure-store";
 import { AuthContext } from "../auth/AuthContext";
+import { fetchCustomerProfile } from "../api/customers";
 
 export default function HomeScreen() {
   const navigation = useNavigation();
-  const { setUser } = React.useContext(AuthContext);
   const [userData, setUserData] = useState(null);
-
-  const handleLogout = async () => {
-    await SecureStore.deleteItemAsync("auth_token");
-    setUser(null);
-    navigation.replace("Login"); // go back to login screen
-  };
 
   useEffect(() => {
     const fetchData = async () => {
       const token = await SecureStore.getItemAsync("auth_token");
       try {
-        const response = await api.get("/customer", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        setUserData(response.data);
+       const userData = await fetchCustomerProfile();
+        setUserData(userData);
 
       } catch (error) {
         console.error("Failed to fetch home data", error);
