@@ -24,6 +24,7 @@ export default function BottomTabNavigator() {
         },
       })}
     >
+      
       <Tab.Screen name="Explore" component={HomeScreen} />
       <Tab.Screen name="Saved" component={SavedScreen} />
       <Tab.Screen name="Updates" component={NotificationsScreen} />

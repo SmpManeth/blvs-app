@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -7,33 +7,33 @@ import {
   TouchableOpacity,
   Image,
   ImageBackground,
-  Alert
-} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { login } from '../auth/auth';
+  Alert,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { login } from "../auth/auth";
 
-export default function LoginScreen({navigation}) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+export default function LoginScreen({ navigation }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
     try {
       const user = await login(email, password);
-      Alert.alert('Success', `Welcome, ${user.name}`);
-      navigation.replace('Welcome'); // Or your main app screen
+      Alert.alert("Success", `Welcome, ${user.name}`);
+      navigation.replace("Welcome"); // Or your main app screen
     } catch (error) {
       console.log(error);
-      Alert.alert('Login Failed', 'Invalid email or password');
+      Alert.alert("Login Failed", "Invalid email or password");
     }
   };
 
   return (
     <ImageBackground
-      source={require('../assets/login-bg.jpg')} // Replace with your blurred palm image
+      source={require("../assets/login-bg.jpg")} // Replace with your blurred palm image
       style={styles.container}
     >
       <View style={styles.card}>
-        <Image source={require('../assets/blv-logo.png')} style={styles.logo} />
+        <Image source={require("../assets/blv-logo.png")} style={styles.logo} />
 
         <View style={styles.inputGroup}>
           <TextInput
@@ -67,10 +67,10 @@ export default function LoginScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   card: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     marginHorizontal: 30,
     padding: 25,
     borderRadius: 20,
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
   logo: {
     width: 90,
     height: 90,
-    alignSelf: 'center',
+    alignSelf: "center",
     marginBottom: 20,
   },
   inputGroup: {
@@ -87,22 +87,22 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: "#ddd",
     borderRadius: 10,
     padding: 12,
     fontSize: 14,
-    backgroundColor: '#f9f9f9',
+    backgroundColor: "#f9f9f9",
   },
   loginButton: {
-    backgroundColor: '#0047AB',
+    backgroundColor: "#0047AB",
     paddingVertical: 14,
     borderRadius: 10,
     marginTop: 10,
   },
   loginButtonText: {
-    color: 'white',
-    textAlign: 'center',
+    color: "white",
+    textAlign: "center",
     fontSize: 15,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -6,62 +6,74 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import api from "../api/api";
+import * as SecureStore from "expo-secure-store";
 
 export default function HomeScreen() {
-  const userName = "John"; // In real case, get from auth state
   const navigation = useNavigation();
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = await SecureStore.getItemAsync("auth_token");
+      try {
+        const response = await api.get("/customer", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log("User data:", response.data);
+        setUserData(response.data);
+      } catch (error) {
+        console.error("Failed to fetch home data", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (!userData) return null;
+
+  const { name, trip, documents } = userData;
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.greeting}>Welcome back, {userName} 👋</Text>
+      <Text style={styles.greeting}>Welcome back, {name} 👋</Text>
 
       <View style={styles.card}>
-        <Text style={styles.cardTitle}>Your Trip to Singapore</Text>
-        <Text style={styles.tripInfo}>Jun 10 - Jun 17 • 7 Nights</Text>
-        <TouchableOpacity style={styles.viewButton}>
+        <Text style={styles.cardTitle}>{trip.title}</Text>
+        <Text style={styles.tripInfo}>
+          {trip.start_date} - {trip.end_date}
+        </Text>
+        <TouchableOpacity
+          style={styles.viewButton}
+          onPress={() => navigation.navigate("ItineraryScreen")}
+        >
           <Text style={styles.viewButtonText}>View Itinerary</Text>
         </TouchableOpacity>
       </View>
 
-      <Text style={styles.sectionTitle}>Related Documents</Text>
-
+      <Text style={styles.sectionTitle}>Your Travel Documents</Text>
       <View style={styles.grid}>
-        <TouchableOpacity
-          style={styles.gridItem}
-          onPress={() => navigation.navigate("DocumentList")}
-        >
-          <Image
-            source={require("../assets/visa-icon.png")}
-            style={styles.gridIcon}
-          />
-          <Text style={styles.gridText}>Visa</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.gridItem}>
-          <Image
-            source={require("../assets/visa-icon.png")}
-            style={styles.gridIcon}
-          />
-          <Text style={styles.gridText}>Tickets</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.gridItem}>
-          <Image
-            source={require("../assets/visa-icon.png")}
-            style={styles.gridIcon}
-          />
-          <Text style={styles.gridText}>Hotels</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.gridItem}>
-          <Image
-            source={require("../assets/visa-icon.png")}
-            style={styles.gridIcon}
-          />
-          <Text style={styles.gridText}>Insurance</Text>
-        </TouchableOpacity>
+        {Object.entries(documents).map(([key, value]) => (
+          <TouchableOpacity
+            key={key}
+            style={styles.gridItem}
+            onPress={() => navigation.navigate("DocumentList")}
+          >
+            <Image
+              source={require("../assets/visa-icon.png")}
+              style={styles.gridIcon}
+            />
+            <Text style={styles.gridText}>
+              {key.charAt(0).toUpperCase() + key.slice(1)}
+              {value ? "" : " (Missing)"}
+            </Text>
+          </TouchableOpacity>
+        ))}
       </View>
     </ScrollView>
   );
@@ -130,3 +142,4 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
 });
+
