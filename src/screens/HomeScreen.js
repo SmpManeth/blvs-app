@@ -11,10 +11,18 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import api from "../api/api";
 import * as SecureStore from "expo-secure-store";
+import { AuthContext } from "../auth/AuthContext";
 
 export default function HomeScreen() {
   const navigation = useNavigation();
+  const { setUser } = React.useContext(AuthContext);
   const [userData, setUserData] = useState(null);
+
+  const handleLogout = async () => {
+    await SecureStore.deleteItemAsync("auth_token");
+    setUser(null);
+    navigation.replace("Login"); // go back to login screen
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,7 +45,7 @@ export default function HomeScreen() {
 
   if (!userData) return null;
 
-  const { name, trip, documents } = userData;
+  const {user, name, trip, documents } = userData;
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -74,6 +82,22 @@ export default function HomeScreen() {
             </Text>
           </TouchableOpacity>
         ))}
+      </View>
+
+      <View style={styles.profileBox}>
+        <View style={styles.profileRow}>
+          <Image
+            source={require("../assets/profile.png")}
+            style={styles.profileIcon}
+          />
+          <View>
+            <Text style={styles.profileName}>{name}</Text>
+            <Text style={styles.profileEmail}>{user.email}</Text>
+          </View>
+        </View>
+        <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
+          <Text style={styles.logoutText}>Logout</Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
@@ -141,5 +165,49 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "500",
   },
-});
+  profileBox: {
+    backgroundColor: "#f8fafc",
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: "#e2e8f0",
+  },
 
+  profileRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+
+  profileIcon: {
+    width: 40,
+    height: 40,
+    marginRight: 12,
+    borderRadius: 20,
+  },
+
+  profileName: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#1e293b",
+  },
+
+  profileEmail: {
+    fontSize: 13,
+    color: "#64748b",
+  },
+
+  logoutButton: {
+    backgroundColor: "#ef4444",
+    paddingVertical: 8,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+
+  logoutText: {
+    color: "#fff",
+    fontSize: 14,
+    fontWeight: "500",
+  },
+});
