@@ -86,21 +86,7 @@ export default function HomeScreen() {
         ))}
       </View>
 
-      <View style={styles.profileBox}>
-        <View style={styles.profileRow}>
-          <Image
-            source={require("../assets/profile.png")}
-            style={styles.profileIcon}
-          />
-          <View>
-            <Text style={styles.profileName}>{user.name}</Text>
-            <Text style={styles.profileEmail}>{user.email}</Text>
-          </View>
-        </View>
-        <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
-          <Text style={styles.logoutText}>Logout</Text>
-        </TouchableOpacity>
-      </View>
+     
     </ScrollView>
   );
 }
@@ -167,49 +153,5 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "500",
   },
-  profileBox: {
-    backgroundColor: "#f8fafc",
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 20,
-    borderWidth: 1,
-    borderColor: "#e2e8f0",
-  },
-
-  profileRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 10,
-  },
-
-  profileIcon: {
-    width: 40,
-    height: 40,
-    marginRight: 12,
-    borderRadius: 20,
-  },
-
-  profileName: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#1e293b",
-  },
-
-  profileEmail: {
-    fontSize: 13,
-    color: "#64748b",
-  },
-
-  logoutButton: {
-    backgroundColor: "#ef4444",
-    paddingVertical: 8,
-    borderRadius: 8,
-    alignItems: "center",
-  },
-
-  logoutText: {
-    color: "#fff",
-    fontSize: 14,
-    fontWeight: "500",
-  },
+ 
 });

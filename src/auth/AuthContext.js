@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
         const response = await api.get('/customer', {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setUser(response.data);
+        setUser(response.data.user);
       } catch (err) {
         await SecureStore.deleteItemAsync('auth_token'); // invalid token
         setUser(null);
