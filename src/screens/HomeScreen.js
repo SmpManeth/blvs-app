@@ -33,8 +33,9 @@ export default function HomeScreen() {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log("User data:", response.data);
+
         setUserData(response.data);
+
       } catch (error) {
         console.error("Failed to fetch home data", error);
       }
@@ -42,14 +43,15 @@ export default function HomeScreen() {
 
     fetchData();
   }, []);
+  
 
   if (!userData) return null;
 
-  const {user, name, trip, documents } = userData;
+  const {user , trip, documents } = userData;
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.greeting}>Welcome back, {name} 👋</Text>
+      <Text style={styles.greeting}>Welcome back, {user.name} 👋</Text>
 
       <View style={styles.card}>
         <Text style={styles.cardTitle}>{trip.title}</Text>
@@ -91,7 +93,7 @@ export default function HomeScreen() {
             style={styles.profileIcon}
           />
           <View>
-            <Text style={styles.profileName}>{name}</Text>
+            <Text style={styles.profileName}>{user.name}</Text>
             <Text style={styles.profileEmail}>{user.email}</Text>
           </View>
         </View>
