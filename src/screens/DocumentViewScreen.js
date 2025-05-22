@@ -1,5 +1,5 @@
-import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
+import React, { useState } from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Alert, ActivityIndicator } from "react-native";
 import { WebView } from "react-native-webview";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import * as FileSystem from "expo-file-system";
@@ -9,6 +9,7 @@ import Header from "../components/Header";
 export default function DocumentViewScreen() {
   const route = useRoute();
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(true);
 
   const { documentTitle, documentUrl } = route.params;
   // const fullUrl = `https://bluelotusvacations.uk/storage/${documentUrl}`;
@@ -53,9 +54,16 @@ export default function DocumentViewScreen() {
         style={styles.webView}
         originWhitelist={["*"]}
         startInLoadingState
-        cacheEnabled={true}
-        cacheMode="LOAD_CACHE_ELSE_NETWORK"
+        onLoad={() => setLoading(false)}
+        onError={() => setLoading(false)}
       />
+      {loading && (
+        <ActivityIndicator
+          size="large"
+          color="#0047AB"
+          style={{ position: "absolute", top: "50%", alignSelf: "center" }}
+        />
+      )}
 
       <TouchableOpacity style={styles.downloadButton} onPress={handleDownload}>
         <Text style={styles.downloadText}>📥 Download PDF</Text>

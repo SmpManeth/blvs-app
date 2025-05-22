@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
+  ActivityIndicator,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import {
@@ -14,11 +15,11 @@ import {
 } from "../api/customers";
 import Header from "../components/Header";
 
-
 export default function DocumentListScreen({ route }) {
   const { documentType } = route.params;
   const navigation = useNavigation();
   const [documents, setDocuments] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   //get alla the documents
   useEffect(() => {
@@ -28,6 +29,8 @@ export default function DocumentListScreen({ route }) {
         setDocuments(documents);
       } catch (error) {
         console.error("Failed to fetch documents", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -67,12 +70,20 @@ export default function DocumentListScreen({ route }) {
       <View style={styles.container}>
         <Text style={styles.heading}>Your Documents</Text>
 
-        <FlatList
-          data={documents}
-          keyExtractor={(item) => item.id}
-          renderItem={renderItem}
-          contentContainerStyle={{ paddingBottom: 20 }}
-        />
+        {loading ? (
+          <ActivityIndicator
+            size="large"
+            color="#0047AB"
+            style={{ marginTop: 100 }}
+          />
+        ) : (
+          <FlatList
+            data={documents}
+            keyExtractor={(item) => item.id}
+            renderItem={renderItem}
+            contentContainerStyle={{ paddingBottom: 20 }}
+          />
+        )}
       </View>
     </>
   );
