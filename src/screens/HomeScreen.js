@@ -52,12 +52,7 @@ export default function HomeScreen() {
           <Text style={styles.tripInfo}>
             {trip.start_date} - {trip.end_date}
           </Text>
-          <TouchableOpacity
-            style={styles.viewButton}
-            onPress={() => navigation.navigate("ItineraryScreen")}
-          >
-            <Text style={styles.viewButtonText}>View Itinerary</Text>
-          </TouchableOpacity>
+         
         </View>
 
         <Text style={styles.sectionTitle}>Your Travel Documents</Text>
@@ -107,16 +102,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 15,
   },
-  viewButton: {
-    backgroundColor: "#0047AB",
-    padding: 10,
-    borderRadius: 8,
-    alignSelf: "flex-start",
-  },
-  viewButtonText: {
-    color: "#fff",
-    fontSize: 14,
-  },
+
   sectionTitle: {
     fontSize: 18,
     fontWeight: "600",
