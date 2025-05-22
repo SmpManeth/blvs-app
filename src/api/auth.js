@@ -1,7 +1,8 @@
+import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../auth/AuthContext";
 import api from "./api";
 import * as SecureStore from "expo-secure-store";
-
+ 
 // Login user and store token
 export async function login(email, password) {
   try {
@@ -19,10 +20,11 @@ export async function login(email, password) {
 
 // Logout user and delete token
 export async function logout() {
-  const { setUser } = useContext(AuthContext);
+
   try {
     await api.post("/logout"); // Token auto-added by api.js
-    setUser(null);
+    console.log("Logout successful");
+
   } catch (error) {
     console.warn("Logout failed silently:", error.message);
   }
@@ -39,4 +41,21 @@ export async function isLoggedIn() {
 // Optional: Get token (if needed elsewhere)
 export async function getToken() {
   return await SecureStore.getItemAsync("auth_token");
+}
+
+// Validate token
+export async function validateToken() {
+  const token = await getToken();
+  if (!token) return false;
+
+  try {
+    const response = await api.get("/validate-token", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  console.log("Token validation response:", response.data);
+    return response.data.valid;
+  } catch (error) {
+    console.warn("Token validation failed:", error.message);
+    return false;
+  }
 }

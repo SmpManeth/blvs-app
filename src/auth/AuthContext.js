@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
-import { getToken, logout } from '../api/auth';
+import { getToken, logout, validateToken } from '../api/auth';
 import { fetchCustomerProfile } from '../api/customers';
 
 export const AuthContext = createContext();
@@ -10,12 +10,16 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuth = async () => {
     const token = await getToken();
+    console.log("Token:", token);
+
+
     if (token) {
+
       try {
         const userData = await fetchCustomerProfile();
         setUser(userData);
       } catch (err) {
-        console.warn("Invalid token, logging out...");
+        console.warn("Invalid token, logging out..." + err);
         await logout(); // ensures token removed
         setUser(null);
       }

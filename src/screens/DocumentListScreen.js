@@ -1,79 +1,99 @@
-import React from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import {
+  fetchCustomerDocuments,
+  fetchCustomerDocumentsbyType,
+} from "../api/customers";
+import Header from "../components/Header";
 
-const documentGroups = [
-  {
-    id: '1',
-    title: 'Flight Ticket - Colombo to Singapore',
-    type: 'Ticket',
-    icon: require('../assets/ticket-icon.png'),
-  },
-  {
-    id: '2',
-    title: 'Hotel Voucher - Hyatt Regency',
-    type: 'Hotel',
-    icon: require('../assets/ticket-icon.png'),
-  },
-  {
-    id: '3',
-    title: 'Visa - Singapore Tourist',
-    type: 'Visa',
-    icon: require('../assets/ticket-icon.png'),
-  },
-];
 
-export default function DocumentListScreen() {
+export default function DocumentListScreen({ route }) {
+  const { documentType } = route.params;
   const navigation = useNavigation();
+  const [documents, setDocuments] = useState([]);
+
+  //get alla the documents
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const documents = await fetchCustomerDocumentsbyType(documentType);
+        setDocuments(documents);
+      } catch (error) {
+        console.error("Failed to fetch documents", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.card}
       onPress={() =>
-        navigation.navigate('DocumentView', {
+        navigation.navigate("DocumentView", {
           documentId: item.id,
-          documentTitle: item.title,
+          documentTitle: item.type,
+          documentUrl: item.file_path,
         })
       }
     >
-      <Image source={item.icon} style={styles.icon} />
+      <Image
+        source={require("../assets/ticket-icon.png")}
+        style={styles.icon}
+      />
       <View style={styles.textContainer}>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.type}>{item.type}</Text>
+        <Text style={styles.title}>{item.name}</Text>
+        <Text>{item.type}</Text>
       </View>
     </TouchableOpacity>
   );
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.heading}>Your Documents</Text>
-
-      <FlatList
-        data={documentGroups}
-        keyExtractor={(item) => item.id}
-        renderItem={renderItem}
-        contentContainerStyle={{ paddingBottom: 20 }}
+    <>
+      <Header
+        title="Document List"
+        rightIcon="person-circle-outline"
+        onRightPress={() => navigation.navigate("ProfileScreen")}
+        showBack={true}
       />
-    </View>
+      <View style={styles.container}>
+        <Text style={styles.heading}>Your Documents</Text>
+
+        <FlatList
+          data={documents}
+          keyExtractor={(item) => item.id}
+          renderItem={renderItem}
+          contentContainerStyle={{ paddingBottom: 20 }}
+        />
+      </View>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     flex: 1,
   },
   heading: {
     fontSize: 20,
-    fontWeight: '600',
+    fontWeight: "600",
     marginBottom: 20,
   },
   card: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     padding: 16,
-    backgroundColor: '#f5f6fa',
+    backgroundColor: "#f5f6fa",
     borderRadius: 12,
     marginBottom: 12,
   },
@@ -87,11 +107,11 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 15,
-    fontWeight: '500',
+    fontWeight: "500",
   },
   type: {
     fontSize: 13,
-    color: '#888',
+    color: "#888",
     marginTop: 3,
   },
 });

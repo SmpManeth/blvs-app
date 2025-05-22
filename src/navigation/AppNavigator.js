@@ -10,6 +10,7 @@ import BottomTabNavigator from "./BottomTabNavigator";
 import DocumentListScreen from "../screens/DocumentListScreen";
 import DocumentViewScreen from "../screens/DocumentViewScreen";
 import AuthLoadingScreen from "../screens/AuthLoadingScreen";
+import ProfileScreen from "../screens/ProfileScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -29,6 +30,9 @@ export default function AppNavigator() {
         <Stack.Screen name="Home" component={BottomTabNavigator} />
         <Stack.Screen name="DocumentList" component={DocumentListScreen} />
         <Stack.Screen name="DocumentView" component={DocumentViewScreen} />
+        <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+
+        
       </Stack.Navigator>
     </NavigationContainer>
   );

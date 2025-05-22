@@ -1,25 +1,64 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { useRoute, useNavigation } from '@react-navigation/native';
+import React from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
+import { WebView } from "react-native-webview";
+import { useRoute, useNavigation } from "@react-navigation/native";
+import * as FileSystem from "expo-file-system";
+import * as Sharing from "expo-sharing";
+import Header from "../components/Header";
 
 export default function DocumentViewScreen() {
   const route = useRoute();
   const navigation = useNavigation();
 
-  const { documentId, documentTitle } = route.params;
+  const { documentTitle, documentUrl } = route.params;
+  // const fullUrl = `https://bluelotusvacations.uk/storage/${documentUrl}`;
+  const fullUrl = "https://bluelotusvacations.uk/pdfs/brightsun_contract.pdf";
+
+  const handleDownload = async () => {
+    try {
+      const fileUri =
+        FileSystem.documentDirectory + documentUrl.split("/").pop();
+
+      const downloadResumable = FileSystem.createDownloadResumable(
+        fullUrl,
+        fileUri
+      );
+      const { uri } = await downloadResumable.downloadAsync();
+
+      if (!(await Sharing.isAvailableAsync())) {
+        Alert.alert("Sharing not available on this device");
+        return;
+      }
+
+      await Sharing.shareAsync(uri);
+    } catch (error) {
+      console.error("Download error:", error);
+      Alert.alert("Download failed", "Unable to download the document.");
+    }
+  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{documentTitle}</Text>
-
-      <Image
-        source={require('../assets/sample-pdf-preview.png')} // Placeholder thumbnail
-        style={styles.preview}
-        resizeMode="contain"
+      <Header
+        title={documentTitle || "Document"}
+        rightIcon="person-circle-outline"
+        onRightPress={() => navigation.navigate("ProfileScreen")}
+        showBack={true}
       />
 
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Text style={styles.backText}>← Back</Text>
+      <WebView
+        source={{
+          uri: `https://docs.google.com/gview?embedded=true&url=${fullUrl}`,
+        }}
+        style={styles.webView}
+        originWhitelist={["*"]}
+        startInLoadingState
+        cacheEnabled={true}
+        cacheMode="LOAD_CACHE_ELSE_NETWORK"
+      />
+
+      <TouchableOpacity style={styles.downloadButton} onPress={handleDownload}>
+        <Text style={styles.downloadText}>📥 Download PDF</Text>
       </TouchableOpacity>
     </View>
   );
@@ -28,31 +67,18 @@ export default function DocumentViewScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: '#fff',
-    alignItems: 'center',
+    backgroundColor: "#fff",
   },
-  title: {
-    fontSize: 18,
-    fontWeight: '600',
-    marginBottom: 20,
-    textAlign: 'center',
+  webView: {
+    flex: 1,
   },
-  preview: {
-    width: '100%',
-    height: 400,
-    borderRadius: 8,
-    backgroundColor: '#f0f0f0',
-    marginBottom: 30,
+  downloadButton: {
+    backgroundColor: "#0047AB",
+    padding: 12,
+    alignItems: "center",
   },
-  backButton: {
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 8,
-    backgroundColor: '#0047AB',
-  },
-  backText: {
-    color: '#fff',
-    fontWeight: '600',
+  downloadText: {
+    color: "#fff",
+    fontWeight: "bold",
   },
 });
