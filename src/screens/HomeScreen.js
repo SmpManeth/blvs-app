@@ -47,7 +47,7 @@ export default function HomeScreen() {
         showBack={false}
       />
       <ScrollView contentContainerStyle={styles.container}>
-        <Image style={ styles.img} source={homeBG}></Image>
+        <Image style={styles.img} source={homeBG}></Image>
         <View style={styles.card}>
           <Text style={styles.cardsubtitle}>Your Trip</Text>
           <Text style={styles.cardTitle}>{trip.title}</Text>
@@ -56,26 +56,28 @@ export default function HomeScreen() {
           </Text>
         </View>
 
-        <Text style={styles.sectionTitle}>Your Travel Documents</Text>
-        <View style={styles.grid}>
-          {Object.entries(documents).map(([key, value]) => (
-            <TouchableOpacity
-              key={key}
-              style={styles.gridItem}
-              onPress={() =>
-                navigation.navigate("DocumentList", { documentType: key })
-              } // Pass the document type to the DocumentList screen
-            >
-              <Image
-                source={require("../assets/visa-icon.png")}
-                style={styles.gridIcon}
-              />
-              <Text style={styles.gridText}>
-                {key.charAt(0).toUpperCase() + key.slice(1)}
-                {value ? "" : " (Missing)"}
-              </Text>
-            </TouchableOpacity>
-          ))}
+        <View style={styles.documentCard}>
+          <Text style={styles.sectionTitle}>Your Documents</Text>
+          <View style={styles.grid}>
+            {Object.entries(documents).map(([key, value]) => (
+              <TouchableOpacity
+                key={key}
+                style={styles.gridItem}
+                onPress={() =>
+                  navigation.navigate("DocumentList", { documentType: key })
+                } // Pass the document type to the DocumentList screen
+              >
+                <Image
+                  source={require("../assets/visa-icon.png")}
+                  style={styles.gridIcon}
+                />
+                <Text style={styles.gridText}>
+                  {key.charAt(0).toUpperCase() + key.slice(1)}
+                  {value ? "" : " (Missing)"}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
         </View>
       </ScrollView>
     </>
@@ -139,6 +141,7 @@ const styles = StyleSheet.create({
     padding: 16,
     marginBottom: 15,
     alignItems: "center",
+    elevation: 3,
   },
   gridIcon: {
     width: 40,
@@ -148,5 +151,20 @@ const styles = StyleSheet.create({
   gridText: {
     fontSize: 14,
     fontWeight: "500",
+  },
+  documentCard: {
+    backgroundColor: "#fff",
+    elevation: 5,
+    padding: 15,
+    borderRadius: 15,
+    marginTop: 20,
+    shadowColor: "black",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
 });
