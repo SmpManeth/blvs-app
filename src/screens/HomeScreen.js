@@ -14,6 +14,7 @@ import * as SecureStore from "expo-secure-store";
 import { AuthContext } from "../auth/AuthContext";
 import { fetchCustomerProfile } from "../api/customers";
 import Header from "../components/Header";
+import homeBG from "../assets/home-bg.png";
 
 export default function HomeScreen() {
   const navigation = useNavigation();
@@ -46,13 +47,13 @@ export default function HomeScreen() {
         showBack={false}
       />
       <ScrollView contentContainerStyle={styles.container}>
-
+        <Image style={ styles.img} source={homeBG}></Image>
         <View style={styles.card}>
+          <Text style={styles.cardsubtitle}>Your Trip</Text>
           <Text style={styles.cardTitle}>{trip.title}</Text>
           <Text style={styles.tripInfo}>
             {trip.start_date} - {trip.end_date}
           </Text>
-         
         </View>
 
         <Text style={styles.sectionTitle}>Your Travel Documents</Text>
@@ -86,16 +87,33 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: "#fff",
   },
-
+  img: {
+    width: "100%",
+    borderRadius: 20,
+    marginBottom: 20,
+  },
   card: {
+    margin: 20,
     backgroundColor: "#f0f4ff",
-    padding: 20,
+    padding: 10,
     borderRadius: 14,
     marginBottom: 30,
+    justifyContent: "center",
+    alignContent: "center",
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 170,
   },
   cardTitle: {
     fontSize: 18,
     fontWeight: "bold",
+  },
+  cardsubtitle: {
+    fontSize: 14,
+    fontWeight: "500",
+    color: "#555",
+    marginBottom: 15,
   },
   tripInfo: {
     color: "#555",
@@ -107,6 +125,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "600",
     marginBottom: 10,
+    marginTop: 20,
   },
   grid: {
     flexDirection: "row",
