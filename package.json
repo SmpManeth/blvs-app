@@ -16,19 +16,20 @@
     "axios": "^1.9.0",
     "expo": "~53.0.9",
     "expo-constants": "~17.1.6",
+    "expo-file-system": "~18.1.10",
     "expo-notifications": "~0.31.2",
     "expo-secure-store": "~14.2.3",
+    "expo-sharing": "~13.1.5",
     "expo-status-bar": "~2.2.3",
     "react": "19.0.0",
     "react-native": "0.79.2",
     "react-native-gesture-handler": "^2.25.0",
+    "react-native-pdf": "^6.7.7",
     "react-native-reanimated": "^3.17.5",
     "react-native-safe-area-context": "^5.4.0",
     "react-native-screens": "^4.10.0",
     "react-native-vector-icons": "^10.2.0",
-    "react-native-webview": "^13.13.5",
-    "expo-file-system": "~18.1.10",
-    "expo-sharing": "~13.1.5"
+    "react-native-webview": "13.13.5"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
